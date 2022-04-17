@@ -46,7 +46,7 @@ public class Libro implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\n-- Dettagli libro --\nISBN: " + isbn + "\nTitolo: " + titolo + "\nAutore: " + autore;
+		return "\n-- Dati libro --\nISBN: " + isbn + "\nTitolo: " + titolo + "\nAutore: " + autore;
 	}
 
 }

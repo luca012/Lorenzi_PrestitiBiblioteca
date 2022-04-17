@@ -35,7 +35,7 @@ public class Prestito implements Serializable {
 
 	@Override
 	public String toString() {
-		return "-- Prestito --\nISBN: " + isbn + "\nCodice fiscale:" + codiceFiscale;
+		return "-- Dati Prestito --\nISBN: " + isbn + "\nCodice fiscale:" + codiceFiscale;
 	}
 	
 	

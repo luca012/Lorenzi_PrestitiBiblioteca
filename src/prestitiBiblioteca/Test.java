@@ -32,7 +32,7 @@ public class Test {
 				b.salva();
 				break;
 			case 3:
-				String isbn = input.inputString("Inserire il codice ISBN:");
+				String isbn = input.inputString("\nInserire il codice ISBN:");
 				String titolo = input.inputString("Inserire il titolo:");
 				String autore = input.inputString("Inserire l'autore:");
 				if (b.aggiungiLibro(isbn, titolo, autore)) {
@@ -42,7 +42,7 @@ public class Test {
 				}
 				break;
 			case 4:
-				String codiceFiscale = input.inputString("Inserire il codice fiscale:");
+				String codiceFiscale = input.inputString("\nInserire il codice fiscale:");
 				String nome = input.inputString("Inserire il nome:");
 				String cognome = input.inputString("Inserire il cognome:");
 				String email = input.inputString("Inserire l'indirizzo email:");
@@ -53,11 +53,11 @@ public class Test {
 				}				
 				break;
 			case 5:
-				String isbn2 = input.inputString("Inserire il codice ISBN:");
+				String isbn2 = input.inputString("\nInserire il codice ISBN:");
 				b.stampaDatiLibro(isbn2);
 				break;
 			case 6:
-				String fisc = input.inputString("Inserire il codice fiscale:");
+				String fisc = input.inputString("\nInserire il codice fiscale:");
 				b.stampaDatiSocio(fisc);
 				break;
 			case 7:
@@ -69,7 +69,7 @@ public class Test {
 				}
 				break;
 			case 8:
-				String isbn4 = input.inputString("Inserire il codice ISBN:");
+				String isbn4 = input.inputString("\nInserire il codice ISBN:");
 				String fisc2 = input.inputString("Inserire il codice fiscale:");
 				if (!b.registraPrestito(isbn4, fisc2)) {
 					System.out.println("Codice ISBN e/o codice fiscale errato/i o libro già in prestito");
@@ -78,7 +78,7 @@ public class Test {
 				}
 				break;
 			case 9:
-				String isbn5 = input.inputString("Inserire il codice ISBN:");
+				String isbn5 = input.inputString("\nInserire il codice ISBN:");
 				if (!b.restituisciLibro(isbn5)) {
 					System.out.println("Codice ISBN errato");
 				} else {

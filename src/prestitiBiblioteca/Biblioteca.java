@@ -26,11 +26,27 @@ public class Biblioteca {
 	private Map<String, Libro> libri;
 	private Map<String, Socio> soci;
 	
+	/**
+	 * Costruttore
+	 * 
+	 * Inizializza le strutture dati {@code ArrayList} <b>prestiti</b> {@code HashMap} <b>libri</b> e {@code TreeMap} <b>soci</b>
+	 */
+	
 	public Biblioteca() {
 		this.prestiti = new ArrayList<>();
-		this.libri = new HashMap<>();;
-		this.soci = new TreeMap<>();;
+		this.libri = new HashMap<>();
+		this.soci = new TreeMap<>();
 	}
+	
+	/**
+	 * 
+	 * Aggiungi un libro alla {@code HashMap} <b>libri</b>
+	 * 
+	 * @param isbn		codice ISBN del libro da aggiungere
+	 * @param titolo	titolo del libro da aggiungere
+	 * @param autore	autore del libro da aggiungere
+	 * @return			true se il libro viene aggiunto, altrimenti false
+	 */
 	
 	public boolean aggiungiLibro(String isbn, String titolo, String autore) {
 		if (cercaLibro(isbn) == null) {
@@ -40,6 +56,16 @@ public class Biblioteca {
 		return false;
 	}
 	
+	/**
+	 * Aggiunge un socio alla {@code TreeMap} <b>soci</b>
+	 * 
+	 * @param codiceFiscale		codice fiscale del socio da aggiungere
+	 * @param cognome			cognome del socio da aggiungere
+	 * @param nome				nome del socio da aggiungere
+	 * @param email				email del socio da aggiungere
+	 * @return					true se il socio viene aggiunto, altrimenti false
+	 */
+	
 	public boolean aggiungiSocio(String codiceFiscale, String cognome, String nome, String email) {
 		if (cercaSocio(codiceFiscale) == null) {
 			soci.put(codiceFiscale, new Socio(codiceFiscale, cognome, nome, email));
@@ -48,6 +74,15 @@ public class Biblioteca {
 		return false;
 	}
 	
+	/**
+	 * METODO PRIVATO, non compare nella java doc
+	 * 
+	 * Cerca un libro nella {@code HashMap} <b>libri</b>
+	 * 
+	 * @param isbn	codice ISBN del libro da cercare 
+	 * @return		l'oggetto {@link Libro}, altrimenti null
+	 */
+	
 	private Libro cercaLibro(String isbn) {
 		if(libri.containsKey(isbn)) {
 			return libri.get(isbn);
@@ -55,12 +90,27 @@ public class Biblioteca {
 		return null;
 	}
 	
+	/**
+	 * METODO PRIVATO, non compare nella java doc
+	 * 
+	 * Cerca un socio nella {@code TreeMap} <b>soci</b>
+	 * 
+	 * @param codiceFiscale		codice fiscale del socio da cercare 
+	 * @return					l'oggetto {@link Socio}, altrimenti null
+	 */
+	
 	private Socio cercaSocio(String codiceFiscale) {
 		if(soci.containsKey(codiceFiscale)) {
 			return soci.get(codiceFiscale);
 		}
 		return null;
 	}
+	
+	/**
+	 * Stampa i dati di un libro
+	 * 
+	 * @param isbn	codice ISBN del libro di cui stampare i dati
+	 */
 	
 	public void stampaDatiLibro(String isbn) {
 		if (cercaLibro(isbn) != null) {
@@ -70,6 +120,12 @@ public class Biblioteca {
 		}
 	}
 	
+	/**
+	 * Stampa i dati di un socio
+	 * 
+	 * @param codiceFiscale codice fiscale del socio di cui stampare i dati
+	 */
+	
 	public void stampaDatiSocio(String codiceFiscale) {
 		if (cercaSocio(codiceFiscale) != null) {
 			System.out.println(cercaSocio(codiceFiscale).toString());
@@ -77,6 +133,14 @@ public class Biblioteca {
 			System.out.println("Il codice fiscale inserito è errato");
 		}
 	}
+	
+	/**
+	 * Registra il prestito di un libro ad un socio
+	 * 
+	 * @param isbn				isbn del libro richiesto in prestito
+	 * @param codiceFiscale		codice fiscale del socio che richiede il prestito
+	 * @return					true se il libro viene prestato al socio, altrimenti false
+	 */
 	
 	public boolean registraPrestito(String isbn, String codiceFiscale) {
 		if (cercaLibro(isbn) != null && cercaSocio(codiceFiscale) != null && verificaPrestito(isbn) == null) {
@@ -87,6 +151,12 @@ public class Biblioteca {
 		return false;
 	}
 	
+	/**
+	 * Verifica se un libro è in prestito
+	 * 
+	 * @param isbn	isbn del libro di cui verificare il prestito
+	 * @return		i dati del socio che ha preso in prestito il libro, altrimenti null
+	 */
 	public String verificaPrestito(String isbn) {
 		if (cercaLibro(isbn) != null) {
 			for (Prestito p : prestiti) {
@@ -98,6 +168,12 @@ public class Biblioteca {
 		return null;
 	}
 	
+	/**
+	 * Restituisce un libro preso in prestito
+	 * 
+	 * @param isbn	isbn del libro da restituire
+	 * @return		true se avviene la restituzione, altrimenti false
+	 */
 	public boolean restituisciLibro(String isbn) {
 		if (cercaLibro(isbn) != null) {
 			for (Prestito p : prestiti) {
@@ -109,6 +185,10 @@ public class Biblioteca {
 		}
 		return false;
 	}
+	
+	/**
+	 * Salva su file binari i dati inerenti a prestiti, libri e soci
+	 */
 	
  	public void salva() {
 		ObjectOutputStream oosPrestiti = null;
@@ -124,12 +204,16 @@ public class Biblioteca {
 			oosPrestiti.close();
 			oosLibri.close();
 			oosSoci.close();
-			System.out.println("Dati salvati nei file prestiti.bin, libri.bin e soci.bin");
+			System.out.println("\nDati salvati nei file prestiti.bin, libri.bin e soci.bin");
 		} catch (IOException e) {
-			System.out.println("Errore nella scrittura dei file");
+			System.out.println("\nErrore nella scrittura dei file");
 		}
 	}
 	
+ 	/**
+ 	 * Carica da file binari i dati inerenti a prestiti, libri e soci
+ 	 */
+ 	
 	public void carica() {
 		ObjectInputStream oisPrestiti = null;
 		ObjectInputStream oisLibri = null;
@@ -144,11 +228,11 @@ public class Biblioteca {
 			oisPrestiti.close();
 			oisLibri.close();
 			oisSoci.close();
-			System.out.println("Dati importati dai file prestiti.bin, libri.bin e soci.bin");
+			System.out.println("\nDati importati dai file prestiti.bin, libri.bin e soci.bin");
 		} catch (IOException e) {
-			System.out.println("File binari non presenti");
+			System.out.println("\nFile binari non presenti");
 		} catch (ClassNotFoundException e) {
-			System.out.println("Errore nella lettura dei file");
+			System.out.println("\nErrore nella lettura dei file");
 		}
 	}
 }

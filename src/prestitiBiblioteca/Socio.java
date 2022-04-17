@@ -57,7 +57,7 @@ public class Socio implements Serializable {
 
 	@Override
 	public String toString() {
-		return "\n-- Dettagli socio--\nCodice fiscale: " + codiceFiscale + "\nCognome: " + 
+		return "\n-- Dati socio --\nCodice fiscale: " + codiceFiscale + "\nCognome: " + 
 				cognome + "\nNome: " + nome + "\nEmail: " + email;
 	}
 	

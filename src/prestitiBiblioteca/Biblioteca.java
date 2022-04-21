@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
@@ -16,7 +17,7 @@ import java.util.TreeMap;
  *  Classe per la gestione di libri, soci e prestiti in una biblioteca
  * 
  * @author Luca Lorenzi
- * @version versione 1.0 del 14/04/2022
+ * @version versione 2.0 del 21/04/2022
  *
  */
 
@@ -80,14 +81,11 @@ public class Biblioteca {
 	 * Cerca un libro nella {@code HashMap} <b>libri</b>
 	 * 
 	 * @param isbn	codice ISBN del libro da cercare 
-	 * @return		l'oggetto {@link Libro}, altrimenti null
+	 * @return		l'oggetto {@link Libro}. Se non esiste ritorna null
 	 */
 	
 	private Libro cercaLibro(String isbn) {
-		if(libri.containsKey(isbn)) {
 			return libri.get(isbn);
-		}
-		return null;
 	}
 	
 	/**
@@ -96,14 +94,11 @@ public class Biblioteca {
 	 * Cerca un socio nella {@code TreeMap} <b>soci</b>
 	 * 
 	 * @param codiceFiscale		codice fiscale del socio da cercare 
-	 * @return					l'oggetto {@link Socio}, altrimenti null
+	 * @return					l'oggetto {@link Socio}. Se non esiste ritorna null
 	 */
 	
 	private Socio cercaSocio(String codiceFiscale) {
-		if(soci.containsKey(codiceFiscale)) {
 			return soci.get(codiceFiscale);
-		}
-		return null;
 	}
 	
 	/**
@@ -187,9 +182,31 @@ public class Biblioteca {
 	}
 	
 	/**
-	 * Salva su file binari i dati inerenti a prestiti, libri e soci
+	 * Stampa i dati di tutti i soci presenti nella {@code HashMap} <b>libri</b> 
+	 */
+		
+	public void stampaLibri() {
+		System.out.println("\n** Elenco libri **");
+		for(Entry<String, Libro> elemento : libri.entrySet()) {
+			System.out.println(elemento.getValue());
+		}
+	}
+	
+	/**
+	 * Stampa i dati di tutti i soci presenti nella {@code TreeMap} <b>soci</b> 
 	 */
 	
+	public void stampaSoci() {
+		System.out.println("\n** Elenco soci **");
+		for(Entry<String, Socio> elemento : soci.entrySet()) {
+			System.out.println(elemento.getValue());
+		}
+	}
+	
+	/**
+	 * Salva su file binari i dati inerenti a prestiti, libri e soci
+	 */
+
  	public void salva() {
 		ObjectOutputStream oosPrestiti = null;
 		ObjectOutputStream oosLibri = null;

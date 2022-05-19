@@ -1,15 +1,19 @@
 package prestitiBiblioteca;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
@@ -17,7 +21,7 @@ import java.util.TreeMap;
  *  Classe per la gestione di libri, soci e prestiti in una biblioteca
  * 
  * @author Luca Lorenzi
- * @version versione 2.0 del 21/04/2022
+ * @version versione 1.0 del 14/04/2022
  *
  */
 
@@ -69,7 +73,9 @@ public class Biblioteca {
 	
 	public boolean aggiungiSocio(String codiceFiscale, String cognome, String nome, String email) {
 		if (cercaSocio(codiceFiscale) == null) {
-			soci.put(codiceFiscale, new Socio(codiceFiscale, cognome, nome, email));
+			Socio s = new Socio(codiceFiscale, cognome, nome, email);
+			soci.put(codiceFiscale, s);
+			appendSocio("Soci.csv", s);
 			return true;
 		}
 		return false;
@@ -81,11 +87,14 @@ public class Biblioteca {
 	 * Cerca un libro nella {@code HashMap} <b>libri</b>
 	 * 
 	 * @param isbn	codice ISBN del libro da cercare 
-	 * @return		l'oggetto {@link Libro}. Se non esiste ritorna null
+	 * @return		l'oggetto {@link Libro}, altrimenti null
 	 */
 	
 	private Libro cercaLibro(String isbn) {
+		if(libri.containsKey(isbn)) {
 			return libri.get(isbn);
+		}
+		return null;
 	}
 	
 	/**
@@ -94,11 +103,14 @@ public class Biblioteca {
 	 * Cerca un socio nella {@code TreeMap} <b>soci</b>
 	 * 
 	 * @param codiceFiscale		codice fiscale del socio da cercare 
-	 * @return					l'oggetto {@link Socio}. Se non esiste ritorna null
+	 * @return					l'oggetto {@link Socio}, altrimenti null
 	 */
 	
 	private Socio cercaSocio(String codiceFiscale) {
+		if(soci.containsKey(codiceFiscale)) {
 			return soci.get(codiceFiscale);
+		}
+		return null;
 	}
 	
 	/**
@@ -182,31 +194,69 @@ public class Biblioteca {
 	}
 	
 	/**
-	 * Stampa i dati di tutti i soci presenti nella {@code HashMap} <b>libri</b> 
+	 * Scrive in modalità append su un file csv i dati soci
+	 * 
+	 * @param nomeFile	nome del file a cui aggiungere soci
+	 * @param s			socio da aggiungere
 	 */
-		
-	public void stampaLibri() {
-		System.out.println("\n** Elenco libri **");
-		for(Entry<String, Libro> elemento : libri.entrySet()) {
-			System.out.println(elemento.getValue());
-		}
+	private void appendSocio(String nomeFile, Socio s) {
+     try
+        {
+            // Apertura del file in modalità "append"
+            // Se il file non esiste lo creo, se esiste scrivo in fondo al file
+            // true = modalita append
+            FileWriter csv_fw = new FileWriter(nomeFile,true);
+            csv_fw.write(s.toString() + "\n");
+            csv_fw.close();
+            //System.out.println("Fine scrittura dati");
+        }
+        catch(IOException ex)     {
+            System.err.println("IOException: " + ex.getMessage());
+        }
 	}
 	
 	/**
-	 * Stampa i dati di tutti i soci presenti nella {@code TreeMap} <b>soci</b> 
+	 * Scrive in modalità append su un file csv i dati soci
+	 * 
+	 * @param nomeFile	nome del file su cui scrivere i soci della {@code TreeMap} <b>soci</b>
 	 */
+	public void writeSoci(String nomeFile) {
+	     try
+	        {
+	            FileWriter csv_fw = new FileWriter(nomeFile);
+	        	for(Socio s: soci.values()) {
+	        		csv_fw.write(s.toString() + "\n");
+		         }
+	            csv_fw.close();
+	            System.out.println("File scritto con successo");
+	        }
+	        catch(IOException ex) {
+	            System.out.println("Errore nella scrittura del file");
+	        }
+	}
 	
-	public void stampaSoci() {
-		System.out.println("\n** Elenco soci **");
-		for(Entry<String, Socio> elemento : soci.entrySet()) {
-			System.out.println(elemento.getValue());
+	/**
+	 * Legge da un file csv i dati soci
+	 * 
+	 * @param nomeFile	nome del file da leggere
+	 */
+	public void readSoci(String nomeFile) {
+		try {
+			String line;
+			BufferedReader br = new BufferedReader(new FileReader(nomeFile));
+			System.out.println("\n-- Lettura file " + nomeFile + " riga per riga con BufferedReader --");
+			while ((line = br.readLine()) != null) {
+				System.out.println(line);
+			}
+			br.close();
+		} catch(IOException ex) {
+			System.out.println("Errore nella lettura del file");
 		}
 	}
 	
 	/**
 	 * Salva su file binari i dati inerenti a prestiti, libri e soci
 	 */
-
  	public void salva() {
 		ObjectOutputStream oosPrestiti = null;
 		ObjectOutputStream oosLibri = null;
